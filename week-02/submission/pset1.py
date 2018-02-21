@@ -12,7 +12,7 @@ list_a.append("last")
 list_a
 print(len(list_a))
 list_a[-1] = "new"
-list_a
+print(list_a)
 
 ## B. Strings
 
@@ -30,7 +30,7 @@ sorted(sentence_words)
 #a sorted version of its initial version.
 
 ## C. Random Function
-
+from random import randint
 
 def randomfunct(x,lowerbound=0):
     return randint(lowerbound,x)
@@ -69,8 +69,12 @@ def passwordtest(pwd):
     else:
         print("Password is a Success!! Great job girl, no one will hack you now!")
 
-passwordtest('sjfiaKs2!!34')
 
+passwordtest('2')
+passwordtest('aaaaaaaaaa')
+passwordtest('aaaaaaaaaa22')
+passwordtest('aaaaaaaaaA22')
+passwordtest('sjfiaKs2!!34')
 ## F. Exponentiation Function
 
 def exp(base,exp):
@@ -84,7 +88,6 @@ exp(5,4)
 ## G. Extra Credit: Min and Max Functions
 
 try_list = [46,3,5,406,4,1,2,3,20,1, 412]
-
 
 def findmin(anylist):
     min_value = None
