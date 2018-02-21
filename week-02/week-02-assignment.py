@@ -83,11 +83,26 @@ exp(5,4)
 
 ## G. Extra Credit: Min and Max Functions
 
-Write your own versions of the Python built-in functions `min()` and `max()`. They should take a list as an argument and return the minimum or maximum element. Assume lists contain numeric items only.
+try_list = [6,3,5,6,4]
 
-+ Inputs:
-  1. A `list` of `numbers` to be tested.
-+ Outputs:
-  1. A `number` of the list that is the maximum or minimum.
+def findmin(x):
+    starter = 0
+    minimum = None
+    for item in try_list:
+        if item == starter:
+            minimum = item
+        if item < starter:
+            minimum = item
+    return minimum
+    print(minimum)
 
-Hint: Pick the first element as the minimum/maximum and then loop through the elements. Each time you find a smaller/larger element, update your minimum/maximum.
+def findmin(list):
+    minimum = 0
+    for i in list:
+        if i == minimum:
+            minimum = i
+        else:
+            minimum +=1
+    return minimum
+
+findmin(try_list)
