@@ -83,26 +83,27 @@ exp(5,4)
 
 ## G. Extra Credit: Min and Max Functions
 
-try_list = [6,3,5,6,4]
+try_list = [46,3,5,406,4,1,2,3,20,1, 412]
 
-def findmin(x):
-    starter = 0
-    minimum = None
-    for item in try_list:
-        if item == starter:
-            minimum = item
-        if item < starter:
-            minimum = item
-    return minimum
-    print(minimum)
 
-def findmin(list):
-    minimum = 0
-    for i in list:
-        if i == minimum:
-            minimum = i
-        else:
-            minimum +=1
-    return minimum
+def findmin(anylist):
+    min_value = None
+    for i in anylist:
+        if not min_value:
+            min_value = i
+        elif i < min_value:
+            min_value = i
+    return min_value
 
 findmin(try_list)
+
+def findmax(anylist):
+    max_value = None
+    for i in anylist:
+        if not max_value:
+            max_value = i
+        elif i > max_value:
+            max_value = i
+    return max_value
+
+findmax(try_list)
