@@ -14,6 +14,8 @@ First we need to import the libraries we'll be using for this workshop; we'll al
 ```python
 import pandas as pd
 import numpy as np
+import matplotlib
+%matplotlib inline
 ```
 
 ## Pandas and Data Frames
@@ -29,6 +31,10 @@ df['name'] = ['Joey', 'Jeremy', 'Jenny']
 
 # View dataframe
 df
+
+df.assign(height = [0.5, 0.4, 0.6])
+
+
 ```
 
 Say we want to add a column. Easy! Use the `assign` method.
@@ -55,8 +61,8 @@ This data is too big to upload uncompressed to GitHub, so I've included it as a 
 
 ```python
 # If you started Atom from a directory other than the /week-03 directory, you'll need to change Python's working directory. Uncomment these lines and specify your week-03 path.
-# import os
-# os.chdir('week-03')
+import os
+os.chdir('../week-03')
 
 # Reading a CSV with Skyhook data
 df = pd.read_csv('data/skyhook_2017-07.csv', sep=',')
@@ -182,13 +188,17 @@ bastille_enthusiasts.head
 Pandas gives us a simple way to generate summary statistics. The `.describe()` method can be used to return a table that includes the count of non-null rows, their mean, standard deviation, etc.
 
 ```python
+bastille_enthusiasts.describe()
 bastille_enthusiasts['count'].describe()
 ```
 
 Say that we want to generate summary statistics for each day in the month of July. We can use the `.groupby()` method to collapse a DataFrame on the values stored in a given column. For those of you who know SQL, this should be somewhat familiar; for each unique value stored in the date column, we're executing a given method, in this case, `.describe()`. The output of this operation is a table in which each row represents a date, and each column is a summary statistic of the `count` column.
 
 ```python
+df.groupby('date')['count'].sum() #Look for each unique date, and sum all the counts for each.
 df.groupby('date')['count'].describe()
+
+df.groupby('date')['count'].sum().plot()
 ```
 
 We can group by multiple columns as well. Let's calculate summary statistics for the `count` column for each hour of each day!
