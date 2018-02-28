@@ -59,6 +59,7 @@ We'll also be using a JSON parsing package called `jsonpickle`. Install it (`pip
 In Atom, make a new .py file where we will be writing our scraper and import the libraries:
 
 ```python
+
 import jsonpickle
 import tweepy
 import pandas as pd
@@ -144,11 +145,11 @@ def get_tweets(
     write = False
   ):
   tweet_count = 0
-  # all_tweets = pd.DataFrame()
+  all_tweets = pd.DataFrame()
   while tweet_count < tweet_max:
     try:
       if (max_id <= 0):
-        if (not since_id):
+        if (not since_id): #Does since_id exist? And no it doesn't, it's equal to 'None'. So run this!
           new_tweets = api.search(
             q = search_term,
             rpp = tweet_per_query,
@@ -177,22 +178,22 @@ def get_tweets(
             max_id = str(max_id - 1),
             since_id = since_id
           )
-      if (not new_tweets):
+      if (not new_tweets): #Now - are there new_tweets? If there are, we don't do this. If there aren't, we stop.
         print("No more tweets found")
         break
-      for tweet in new_tweets:
+      for tweet in new_tweets: #Otherwise, we'll go here! For every tweet in our array of new_tweets, do this thing.
         # all_tweets = all_tweets.append(parse_tweet(tweet), ignore_index = True)
-        if write == True:
+        if write == True: # If write variable is true, write to a json file.
             with open(out_file, 'w') as f:
                 f.write(jsonpickle.encode(tweet._json, unpicklable=False) + '\n')
-      max_id = new_tweets[-1].id
-      tweet_count += len(new_tweets)
+      max_id = new_tweets[-1].id #Now identify a new max_id. Pull the max id (the particular id) of the last tweet to have been pulled.
+      tweet_count += len(new_tweets) #Also add the number of new tweets to our tweet counts. Aka tweet_count = tweet_count + len(new_tweets)
     except tweepy.TweepError as e:
       # Just exit if any error
       print("Error : " + str(e))
       break
   print (f"Downloaded {tweet_count} tweets.")
-  # return all_tweets
+  return all_tweets
 
 # Set a Lat Lon
 latlng = '42.359416,-71.093993' # Eric's office (ish)
@@ -212,7 +213,12 @@ get_tweets(
   write = True,
   out_file = file_name
 )
+
+
 ```
+
+
+
 
 This function will run as is, allowing you to download Tweets to a `.json` file---give it a go! However, we might also want to download it into a more Python-legible format so that we can manipulate it and analyze it.
 
@@ -253,6 +259,9 @@ tweets = get_tweets(
   write = True,
   out_file = file_name
 )
+
+tweets
+
 ```
 
 ## Reloading Downloaded Data
