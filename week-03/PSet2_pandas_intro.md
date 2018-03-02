@@ -32,11 +32,13 @@ import matplotlib.pylab as plt
 
 df = pd.read_csv('week-03/data/skyhook_2017-07.csv', sep=',')
 
+df.head()
+
 # Create a new date column formatted as datetimes.
-df['date_new'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
+df['date'] = pd.to_datetime(df['date'], format='%Y-%m-%d')
 
 # Determine which weekday a given date lands on, and adjust it to account for the fact that '0' in our hours field corresponds to Sunday, but .weekday() returns 0 for Monday.
-df['weekday'] = df['date_new'].apply(lambda x: x.weekday() + 1)
+df['weekday'] = df['date'].apply(lambda x: x.weekday() + 1)
 df['weekday'].replace(7, 0, inplace = True)
 
 # Remove hour variables outside of the 24-hour window corresponding to the day of the week a given date lands on.
@@ -67,6 +69,13 @@ Your first task is to create a bar chart (not a line chart!) of the total count 
 
 ```python
 
+df.head()
+
+
+#df.groupby('date')['count'].sum() #Look for each unique date, and sum all the counts for each.
+#df.groupby('date')['count'].describe()
+
+df.groupby('date')['count'].sum().plot(kind='bar', color='y', title='Total Pings by Date')
 ```
 
 ## Problem 2: Modify the Hours Column
@@ -79,6 +88,23 @@ After running your code, you should have either a new column in your DataFrame o
 
 ```python
 
+#df['hour2'] = df['hour']
+#df.head()
+
+for i in range(0, 168, 24):
+    j = range(0,168,1)[i-5]
+    print(i,j)
+    if (j>i):
+        df['hour'].replace(range(i, i+19,1), range(5,24,1), inplace = True)
+        df['hour'].replace(range(j, j + 5, 1), range(0,5,1), inplace = True)
+    else:
+        df['hour'].replace(range(j, i + 19, 1), range(0, 24, 1), inplace = True)
+
+#df[['hour','hour2']]
+
+df['hour'].unique()
+
+
 ```
 
 ## Problem 3: Create a Timestamp Column
@@ -89,6 +115,13 @@ Now that you have both a date and a time (stored in a more familiar 24-hour rang
 
 ```python
 
+df.head()
+df['time_new'] = pd.to_timedelta(df['hour'], unit='h')
+df.head()
+
+df['time_stamp'] = df['date'] +  df['time_new']
+
+df.head()
 ```
 
 ## Problem 4: Create Two Line Charts of Activity by Hour
@@ -99,6 +132,9 @@ Create two more graphs. The first should be a **line plot** of **total activity*
 
 ```python
 
+df.groupby('time_stamp')['count'].sum().plot(kind='line', color='y', title='Total Pings by Hour Over Time')
+
+df.groupby('hour')['count'].sum().plot(kind='bar', color='y', title='Total Pings by Hour')
 ```
 
 ## Problem 5: Create a Scatter Plot of Shaded by Activity
@@ -106,7 +142,16 @@ Create two more graphs. The first should be a **line plot** of **total activity*
 Pick three times (or time ranges) and use the latitude and longitude to produce scatterplots of each. In each of these scatterplots, the size of the dot should correspond to the number of GPS pings. Find the [Scatterplot documentation here](http://pandas.pydata.org/pandas-docs/version/0.19.1/visualization.html#scatter-plot). You may also want to look into how to specify a pandas Timestamp (e.g., pd.Timestamp) so that you can write a mask that will filter your DataFrame appropriately. Start with the [Timestamp documentation](https://pandas.pydata.org/pandas-docs/stable/timeseries.html#timestamps-vs-time-spans)!
 
 ```python
+df.head()
+df[df['date']=='2017-07-01'].plot.scatter(x='lat', y='lon')
 
+
+df.dtypes
+df[df['hour'].isin([4])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location in at 4am')
+
+df[df['hour'].isin([12])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location at noon')
+
+df[df['hour'].isin([18])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location at 6pm')
 ```
 
 ## Problem 6: Analyze Your (Very) Preliminary Findings
@@ -116,3 +161,5 @@ For three of the visualizations you produced above, write a one or two paragraph
 1. A phenomenon that the data make visible (for example, how location services are utilized over the course of a day and why this might by).
 2. A shortcoming in the completeness of the data that becomes obvious when it is visualized.
 3. How this data could help us identify vulnerabilities related to climate change in the greater Boston area.
+
+As one would expect, location services are used far more often at 6pm than in the middle of the night - and much more along major transportation routes. This makes sense given that 6pm is rush hour, and many folks will be trying to access Google Maps/Waze/whatever your GPS doodad of choice is. It does seem like the data is less complete for the outskirts of Boston or the bay? I imagine that this could help illuminate where exactly are major highways that could be most at risk when sea level rise starts to become an issue.
