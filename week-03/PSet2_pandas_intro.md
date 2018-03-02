@@ -143,11 +143,9 @@ Pick three times (or time ranges) and use the latitude and longitude to produce 
 
 ```python
 df.head()
-df[df['date']=='2017-07-01'].plot.scatter(x='lat', y='lon')
-
 
 df.dtypes
-df[df['hour'].isin([4])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location in at 4am')
+df[df['hour'].isin([4])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location in at 4am') #Is this what you meant by this? Idk if my scatterplot is supposed to be a map but if so - cool visualization!
 
 df[df['hour'].isin([12])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location at noon')
 
