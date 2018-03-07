@@ -51,6 +51,8 @@ Once you've installed GDAL from KyngChaos, you'll have to add its location to yo
 ```python
 import sys
 sys.path.insert(0,'/Library/Frameworks/GDAL.framework/Versions/2.2/Python/3.6/site-packages')
+sys.path
+from osgeo import gdal
 ```
 
 You (should) only need to do this once.
@@ -85,7 +87,7 @@ import numpy as np
 import os
 %matplotlib inline
 ## make sure you set the DATA path to be to the folder where you downloaded the data at the beginning of class
-DATA = "/Users/ehuntley/Desktop/week-05/landsat"
+DATA = "/Users/maiawoluchem/Documents/Grad School/2018 Spring/Big Data/big-data-spring2018/week-05/ws04_materials"
 ```
 
 ## Calculating a Normalized Difference Vegetation Index
@@ -199,7 +201,7 @@ We now need to read in some correction values stored in the Landsat metadata in 
 
 ```python
 # make this path the local path to your MTL.txt file that you downloaded at the start of the workshop
-meta_file = '/Users/ehuntley/Desktop/week-05/landsat/MTL.txt'
+meta_file = '/Users/maiawoluchem/Documents/Grad School/2018 Spring/Big Data/big-data-spring2018/week-05/ws04_materials/MTL.txt'
 
 with open(meta_file) as f:
     meta = f.readlines()
