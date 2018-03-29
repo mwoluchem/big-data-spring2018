@@ -36,8 +36,8 @@ def randomfunct(x,lowerbound=0):
     return randint(lowerbound,x)
     print(randint(lowerbound,x))
 
-randomfunct(6)
-randomfunct(6,6)
+randomfunct(100)
+randomfunct(6,2)
 
 assert(0 <= randomfunct(100) <= 100)
 assert(50 <= randomfunct(100, lowerbound = 50) <= 100)
@@ -69,7 +69,7 @@ def passwordtest(pwd):
     else:
         print("Password is a Success!! Great job girl, no one will hack you now!")
 
-
+passwordtest('sjfiaKs2!!343!5')
 passwordtest('2')
 passwordtest('aaaaaaaaaa')
 passwordtest('aaaaaaaaaa22')
@@ -83,7 +83,7 @@ def exp(base,exp):
         root= root*base
     return root
 
-exp(5,4)
+exp(5,44)
 
 ## G. Extra Credit: Min and Max Functions
 
