@@ -5,9 +5,6 @@ Session Objectives
 - Learn the fundamentals of D3 and Scaleable Vector Graphics (SVG).
 - Understand how D3 binds a data value to a page element.
 
-To download the materials for exercises, [click here.](https://github.com/mjfoster83/d3-workshop) This is
-d3\_part1\_barcharts.
-
 ## What is D3?
 
 D3 stands for [Data Driven Documents](http://d3js.org/). It is a
@@ -51,7 +48,7 @@ will often have many assets, including images, data, and other
 supplemental material that makes the page display and function
 properly.
 
-![](/_assets/img/d3-documents.png)
+![](./images/d3-documents.png)
 
 ## How D3 Works
 
@@ -70,12 +67,12 @@ data[^1^](#citation1).
 Just what does this mean? Take a look at a sample dataset. D3 allows
 these data to be attached to elements in our document.
 
-City         \# of Rats
------------- ------------
-Brookline    40
-Boston       90
-Cambridge    30
-Somerville   60
+| City       | # of Rats |
+|------------|-----------|
+| Brookline  | 40        |
+| Boston     | 90        |
+| Cambridge  | 30        |
+| Somerville | 60        |
 
 The primary element you will find yourself working with is the SVG, or
 the [Scalable Vector
@@ -85,7 +82,7 @@ provides support for animation and interactivity. SVG is unique in that
 all of the behaviors and components of the SVG images can be accessed
 from JavaScript and CSS just like any other element in a webpage.
 
-![](/_assets/img/data-binding.png)
+![](.images/data-binding.png)
 
 ## Let’s Get Started!
 
@@ -176,14 +173,13 @@ highlighted in the block below into your code.
 
 </body>
 </html>
-
 ```
 
 Save your document and open up your page in a web browser. You will see
 the elements on the page at the top, justified to the top, with height
 set accordingly to our hardcoded dataset.
 
-### Data Hardcoded into SVG Elements [(Click to View this Example.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart2_example.html/)
+![Data Hardcoded into SVG Elements](./images/svg_hardcode.png)
 
 This is very basic, but we have begun to locate items on our screen.
 This is the first step towards a nice visualization. We can build from
@@ -196,15 +192,9 @@ One of the primary element types you will manipulate using D3 are
 Scaleable Vector Graphics, or SVG. These are page elements that can sit
 right within the body of your page and can be manipulated like any other
 element in the Document Object Model. The following shows the layout of
-three circles in the DOM, and how they will appear in our browser.
+three rectangles in the DOM, and how they will appear in our browser.
 
-![](/_assets/img/d3-working-with-svg.png){.img-responsive .center-block}
-
-*Circles with SVG: diagram based on [Three Little Circles](citation2), by Mike Bostock*
-
-![](/_assets/img/d3-working-with-svg-2.png)
-
-*Rectangles with SVG: diagram based on this exercise!*
+![Rectangles with SVG](./images/d3-working-with-svg-2.png)
 
 Note that **0,0** is in the upper left corner of the SVG element, and
 all child elements are located in relation to this parent element.
@@ -225,7 +215,7 @@ the elements of a web page that can be traced for easy interaction and
 manipulation, and also as the space in which the elements exist when you
 interact with them.
 
-![](/_assets/img/d3-dom.PNG)
+![D3 and the DOM](./images/d3-dom.PNG)
 
 The body of your page is an element, and under it are paragraph elements
 and headers. Typically, an SVG element used in D3 sits nested within
@@ -280,7 +270,7 @@ use D3 to create and define the height attribute.
 Save your document and open up your page in a web browser. You will see
 the elements on the page at the top, justified to the top.
 
-##### Using D3 to Bind Data to the Elements (Looks the same, Huh?) [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart3_example.html/)
+![D3 with Bound Data](./images/d3-bind-data-1.png)
 
 ### So, what happened here?
 
@@ -290,7 +280,7 @@ want to show using the height of each of the rectangle elements. This is
 measured in pixels.
 
 ```js
-    var ratData = [ 40, 90, 30, 60 ];
+var ratData = [ 40, 90, 30, 60 ];
 ```
 
 Next, we use a D3 selection to select all of the rectangle objects
@@ -310,9 +300,9 @@ methods to find single or multiple
 elements, respectively. This works much like [jQuery](jquery.com).
 
 ```js
-    d3.selectAll( "rect" ); // select all SVG rect elements
-    d3.select( "#boston" ); // select an element where id='boston'
-    d3.selectAll( ".bar" ); // select all elements with the class 'bar'
+d3.selectAll( "rect" ); // select all SVG rect elements
+d3.select( "#boston" ); // select an element where id='boston'
+d3.selectAll( ".bar" ); // select all elements with the class 'bar'
 ```
 
 Since `selectAll("rect")` finds multiple elements, everything in the
@@ -328,21 +318,14 @@ allows for functions and operations to be performed on each data value.
 The order, unless specified in another way, will be from top to bottom
 down you page.
 
-For more on working with selections and the options available, [check
-out the
-documentation.](https://github.com/mbostock/d3/wiki/Selections#d3_selectAll)
-
-Additional recommended reading on selections from Mike Bostock [How
-Selections Work](https://bost.ocks.org/mike/selection/)
-
 The selector, in our code looks like the following:
 
 ```js
-    d3.selectAll( "rect" )
-        .data( ratData )
-        .attr( "height", function(d){
-            return d;
-        });
+d3.selectAll( "rect" )
+    .data( ratData )
+    .attr( "height", function(d){
+        return d;
+    });
 ```
 
 In pseudo code, this selects all `rect` elements, passes the variable
@@ -352,11 +335,16 @@ The elements will be selected and data from the array will be applied in
 **document traversal order** (top-to-bottom). When you run out of
 elements or data, the return is empty.
 
++ For more on working with selections and the options available, [check
+out the documentation.](https://github.com/mbostock/d3/wiki/Selections#d3_selectAll)
++ Additional recommended reading on selections from Mike Bostock [How
+Selections Work](https://bost.ocks.org/mike/selection/)
+
 #### The data() method
 
 The [data()](https://github.com/mbostock/d3/wiki/Selections#data) method
 is the very soul of D3. With it, an array of data is bound to page
-elements.[^4^](#citation4)
+elements.
 
 #### The attr() method
 
@@ -366,13 +354,12 @@ set the height attribute.
 
 #### Anonymous Functions
 
-Something that might have happened here that could be a bit confusing,
-we set height to an anonymous function.
+In our code we set height to an anonymous function. These can be a bit confusing, so let's dig into what this means.
 
 ```js
-    .attr( "height", function(d){
-        return d;
-    });
+.attr( "height", function(d){
+    return d;
+});
 ```
 
 The argument **d** that is being passed to the function represents our
@@ -382,46 +369,64 @@ built into D3. The name of this variable (**d**) is arbitrary, but d is
 usually used as it represents a data value.
 
 You can use **console.log(d);** to see the values held by **d** printed
-to the console.
+to the console in your browser.
 
 ```js
-    .attr( "height", function(d){
-        console.log(d);
-        return d;
-    });
+.attr( "height", function(d){
+    console.log(d);
+    return d;
+});
 ```
 
 This code prints the following to the console.
 
-![](/_assets/img/console-d.png){.img-responsive .center-block}
+![Console Output](/_assets/img/console-d.png)
 
 Change the variable value to **a** and view the result.
 
 ```js
-    .attr( "height", function(a){
-        console.log(a);
-        return a;
-    });
+.attr( "height", function(a){
+    console.log(a);
+    return a;
+});
 ```
 
-![](/_assets/img/console-d.png){.img-responsive .center-block}
-
-##### Console Log of **a** Variable
+![Console Output](.images/console-d.png)
 
 The data you bind to your page elements is an object in itself. In this
 example, d is our object that can be operated on locally within this
 function. If our data object has properties, you can refer to these
 properties in this step. For example, if our dataset is a JSON, with two
 properties, number of rats (*number*) and city *city*), we can reference
-it as we would in any other JavaScript object. i.e. **d.number**. We
+it as we would in any other JavaScript object. i.e. `d.number`. We
 will look at this more in a bit!
+
+## Arrow Functions
+
+While we'll be using the above syntax to work with anonymous functions in D3,
+it's worth noting that there is another way which is slightly more concise - this
+is the arrow function. Using arrow functions, we can write:
+
+```js
+.attr( "height", d => d);
+```
+Which is syntactically equivalent to:
+
+```js
+.attr( "height", function(d){
+    return d;
+});
+```
+
+Cool! But for now, let's stick with the more verbose syntax as it is slightly more
+standard.
 
 ## Use D3 to Read Data and Create Elements from Data
 
 It’s more often the case that you don’t have your data-driven elements
 pre-baked into the page, but rather create them on the fly. Let’s give
 that a try. Save your current document, and let’s **start with a new
-empty HTML page.** Again, here is the boilerplate, with the D3 library loaded.
+empty HTML page.** Save this new HTML page in the same folder as the HTML file we were just working on. Again, here is the boilerplate, with the D3 library loaded.
 Note we don’t create any SVG elements by hand, we are going to use the
 capabilities of the D3 library to create these.
 
@@ -448,12 +453,12 @@ script will go.
 
 ### Add the Data
 
-First things first, add the data. We are going to use the same
+First things first, add the data. We are going to use the same (very simple)
 dataset.
 
 ```js
   // Our D3 code will go here.
-  var ratData = [ 40, 90, 30, 60 ]; // Rat data!
+var ratData = [ 40, 90, 30, 60 ]; // Rat data!
 ```
 
 ### Create `svg` Element
@@ -468,22 +473,22 @@ creates a new element as a child of each element in the current
 selection, then the
 [attr()](https://github.com/mbostock/d3/wiki/Selections#attr) method
 will be used to set the height and width of the SVG element. The
-highlighed code below will create our SVG as a child of the body
+highlighted code below will create our SVG as a child of the body
 element, and give it height and weight attributes.
 
 ```js
-    // Our D3 code will go here.
-    var ratData = [ 40, 90, 30, 60 ]; // Rat data!
+// Our D3 code will go here.
+var ratData = [ 40, 90, 30, 60 ]; // Rat data!
 
-    // Width and height of SVG
-    var w = 150;
-    var h = 175;
+// Width and height of SVG
+var w = 150;
+var h = 175;
 
-    //Create SVG element
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", h);
+//Create SVG element
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
 ```
 
 ### Create `rect` Elements
@@ -493,29 +498,29 @@ The next step is create the `rect` elements, bind the data to
 them, and place them on the screen. Do this with the following code.
 
 ```js
-    // Our D3 code will go here.
-    var ratData = [ 40, 90, 30, 60 ]; // Rat data!
+// Our D3 code will go here.
+var ratData = [ 40, 90, 30, 60 ]; // Rat data!
 
-    // Width and height of SVG
-    var w = 150;
-    var h = 175;
+// Width and height of SVG
+var w = 150;
+var h = 175;
 
-    //Create SVG element
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", h);
+//Create SVG element
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
 
-    // Select and generate rectangle elements
-    svg.selectAll( "rect" )
-        .data( ratData )
-        .enter()
-        .append("rect")
-        .attr( "x", 30 )
-        .attr( "y", 0 )
-        .attr( "width", 20 )
-        .attr( "height", 100 )
-        .attr( "fill", "steelblue");
+// Select and generate rectangle elements
+svg.selectAll( "rect" )
+    .data( ratData )
+    .enter()
+    .append("rect")
+    .attr( "x", 30 )
+    .attr( "y", 0 )
+    .attr( "width", 20 )
+    .attr( "height", 100 )
+    .attr( "fill", "steelblue");
 ```
 
 Things just got a little weird. **Did we just select a bunch of
@@ -529,7 +534,7 @@ get an empty selection. The next few lines of code in our block above
 create these elements by binding data, defining an `enter()` behavior, and
 appending a new element.
 
-1. `data()` - We bind the data to our empty selection using the [`data()]`(https://github.com/mbostock/d3/wiki/Selections#data) method, it will return the four data values in our dataset.
+1. `data()` - We bind the data to our empty selection using the [`data()`](https://github.com/mbostock/d3/wiki/Selections#data) method, it will return the four data values in our dataset.
 2. `enter()` - When we load data, it will iterate through the dataset and apply all methods that follow to each of the values of our dataset. The [`enter()`](https://github.com/mbostock/d3/wiki/Selections#enter) method creates placeholders for each data element for which no corresponding DOM element was found. Because it iterates, it will create four placeholders.
 3. `append()` - Finally, the [`append(“rect”)`](https://github.com/mbostock/d3/wiki/Selections#append) method will insert a rectangle into each of the placeholders that do not have a “rect” element, which is all of them.
 4. `attr()` - Iteratively sets attributes, such as (x,y) location, width, and height for each of the rectangle elements. Right now, these are all in the same location **(0,0)** and have the same width **(20)** and height **(100)**. We need to use functions to make this work properly, and will detail that next.
@@ -538,70 +543,70 @@ Save and refresh your document. You should see this… pretty boring, but
 if you see this it is working! You have four rectangles, but they are
 all in the same location.
 
-##### Creating Elements with D3 [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart4_example.html/)
+![Four rectangles in the same location.](./images/same_location.png)
 
 ### Working with the Enter and Exit methods
 
 The `enter()` and `exit()` methods deal with new elements and unused
 elements, respectively, based on incoming data. It's worth taking a minute to fully grasp these!
 
-The `enter()` method tells D3 what to do when there are more elements in a data array than there are elements in the selection. So if you have 12 rows in an input dataset but only 8 `rect` elements when the `enter()` method is invoked, D3 will go to what follows the `enter()` method to determine what to do. Usually, the enter function will be used to create (`append()`) new elements to a given visualization. The `exit()` method tells D3 what to do when there are more elements in a data array than there are elements in a selection. Usually, this will be used to clear elements that are no longer needed.
+The `enter()` method tells D3 what to do when there are more elements in a data array than there are elements in the selection. So if you have 12 rows in an input dataset but only 8 `rect` elements when the `enter()` method is invoked, D3 will go to what follows the `enter()` method to determine what to do. Usually, the enter function will be used to create (`append()`) new elements to a given visualization. The `exit()` method tells D3 what to do when there are more elements in a data array than there are elements in a selection. Usually, this will be used to clear elements that are no longer needed. You can think of these like the 'go' and 'stop' methods, where `enter()` is the former and `exit()` is the latter.
 
 ### Styling the `rect` Elements
 
 Finally, we properly size and arrange the `rect` elements. To do
-this, we can modify the h`eight` attribute and `x` and `y` attributes for each
+this, we can modify the `height` attribute and `x` and `y` attributes for each
 of our rectangle elements. The attributes can read functions that allow
 us to dynamically change attributes based on the data value of the
 current iteration.
 
-Update the attributes to properly display the “rect” elements by
+So, let's update the attributes to properly display the “rect” elements by
 changing the `x` attribute and `height` attribute. This will look
 familiar! It is exactly how we assigned a height in the previous
 example.
 
 ```js
-    // Our D3 code will go here.
-    var ratData = [ 40, 90, 30, 60 ]; // Rat data!
+// Our D3 code will go here.
+var ratData = [ 40, 90, 30, 60 ]; // Rat data!
 
-    // Width and height of SVG
-    var w = 150;
-    var h = 175;
+// Width and height of SVG
+var w = 150;
+var h = 175;
 
-    //Create SVG element
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", h);
+//Create SVG element
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
 
-    // Select and generate rectangle elements
-    svg.selectAll( "rect" )
-        .data( ratData )
-        .enter()
-        .append("rect")
-        .attr( "x", function(d,i){
-            return i*25 + 30; // Set x coordinate of rectangle to index of data value (i)*25.
-            // Add 30 to account for our left margin.
-        })
-        .attr( "y", 0 )
-        .attr( "width", 20 )
-        .attr( "height", function(d){
-            return d; // Set height of rectangle to data value
-        })
-        .attr( "fill", "steelblue");
+// Select and generate rectangle elements
+svg.selectAll( "rect" )
+    .data( ratData )
+    .enter()
+    .append("rect")
+    .attr( "x", function(d,i){
+        return i*25 + 30; // Set x coordinate of rectangle to index of data value (i)*25.
+        // Add 30 to account for our left margin.
+    })
+    .attr( "y", 0 )
+    .attr( "width", 20 )
+    .attr( "height", function(d){
+        return d; // Set height of rectangle to data value
+    })
+    .attr( "fill", "steelblue");
 ```
 
 #### Setting the x attribute
 
-Space the bars our horizontally using the
+You notice here a second argument is provided to our anonymous function
+(**i**). This represents the index location of the data value referred to
+in the **d** argument.
+
+Here we space the bars horizontally using the
 second i argument. The i argument is the index of each bar in the
 selection as the code iterates through. For our four rectangles, **i**
 here will be 0, 1, 2, and 3, giving us **x** positions of **0, 25, 50,
 and 75**.
-
-You notice here a second argument is provided to our anonymous function
-(**i**). This represets the index location of the data value referred to
-in the **d** argument.
 
 #### Setting the height attribute
 
@@ -621,12 +626,12 @@ just use `steelblue`.
 
 Save and refresh your document... look familiar? We did it!
 
-##### Creating SVG Elements using D3 [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart5_example.html/)
+![It worked!](./images/d3_styled_bars.png)
 
 ## Design the Chart
 
 As is, this chart is not very useful. In fact, it is just four
-rectangles. We need to add some context, rejustify the bars, and perhaps
+rectangles. We need to add some context, re-justify the bars, and perhaps
 add some axes. We can do this right in our script by adjusting the
 attributes and properties of the SVG elements. In the following steps,
 we’ll add those axes and label.
@@ -636,46 +641,48 @@ we’ll add those axes and label.
 The chart is confusing. The higher the
 number the farther down the page the bar extends. We can change this
 quite easily by adjusting the value of the y attribute. See the
-adjustment to our code below in lines 24-26.
+adjustment to our code below.
 
 ```js
-    // Our D3 code will go here.
-    var ratData = [ 40, 90, 30, 60 ]; // Rat data!
+// Our D3 code will go here.
+var ratData = [ 40, 90, 30, 60 ]; // Rat data!
 
-    // Width and height of SVG
-    var w = 150;
-    var h = 175;
+// Width and height of SVG
+var w = 150;
+var h = 175;
 
-    //Create SVG element
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", w)
-        .attr("height", h);
+//Create SVG element
+var svg = d3.select("body")
+    .append("svg")
+    .attr("width", w)
+    .attr("height", h);
 
-    // Select and generate rectangle elements
-    svg.selectAll( "rect" )
-        .data( ratData )
-        .enter()
-        .append("rect")
-        .attr( "x", function(d,i){
-            return i*25 + 30; // Set x coordinate of rectangle to index of data value (i)*25.
-            // Add 30 to account for our left margin.
-        })
-        .attr( "y", function(d){
-            return h - d; // Set y coordinate for each bar to height minus the data value
-        })
-        .attr( "width", 20 )
-        .attr( "height", function(d){
-            return d; // Set height of rectangle to data value
-        })
-        .attr( "fill", "steelblue");
+// Select and generate rectangle elements
+svg.selectAll( "rect" )
+    .data( ratData )
+    .enter()
+    .append("rect")
+    .attr( "x", function(d,i){
+        return i*25 + 30; // Set x coordinate of rectangle to index of data value (i)*25.
+        // Add 30 to account for our left margin.
+    })
+    .attr( "y", function(d){
+        return h - d; // Set y coordinate for each bar to height minus the data value
+    })
+    .attr( "width", 20 )
+    .attr( "height", function(d){
+        return d; // Set height of rectangle to data value
+    })
+    .attr( "fill", "steelblue");
 ```
 
 This will bottom-justify our bars and will be more intuitive. Save and
 refresh.
 
+![It worked!](./images/bottom_bars.png)
+
 ### Add Labels
-provide a bit more context, and add axes to the map along the left side
+This will provide a bit more context, and add axes to the map along the left side
 and bottom. When finished, our chart will look like this. Let’s take a
 look.
 
@@ -683,27 +690,26 @@ look.
 
 A simple method of doing this is to add
 SVG line elements to our script. We can set the X and Y coordinates for
-the start and end of the line, along with the stroke and width. The
-following text will add our axes.
+the start and end of the line, along with the stroke and width. Add the following text in our script and they will add our axes.
 
 ```js
-    // Create y-axis
-    svg.append("line")
-        .attr("x1", 30)
-        .attr("y1", 75)
-        .attr("x2", 30)
-        .attr("y2", 175)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black");
+// Create y-axis
+svg.append("line")
+    .attr("x1", 30)
+    .attr("y1", 75)
+    .attr("x2", 30)
+    .attr("y2", 175)
+    .attr("stroke-width", 2)
+    .attr("stroke", "black");
 
-    // Create x-axis
-    svg.append("line")
-        .attr("x1", 30)
-        .attr("y1", 175)
-        .attr("x2", 130)
-        .attr("y2", 175)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black");
+// Create x-axis
+svg.append("line")
+    .attr("x1", 30)
+    .attr("y1", 175)
+    .attr("x2", 130)
+    .attr("y2", 175)
+    .attr("stroke-width", 2)
+    .attr("stroke", "black");
 ```
 
 #### Add a Label
@@ -726,16 +732,18 @@ elements to our `svg` element.
 In the **head** of your document, use some CSS to
 style your font
 
-```css
-        text {
-            font-family: "Open Sans", sans-serif;
-            font-size: 12px;
-        }
+```html
+<style>
+  text {
+      font-family: "Open Sans", sans-serif;
+      font-size: 12px;
+  }
+</style>
 ```
 
 Our chart:
 
-##### Styled Bar Chart with Labels and Axes [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart8_example.html/)
+![Labeled axes!](./images/labeled_axes.png)
 
 ## What happens if our array changes size?
 
@@ -745,13 +753,11 @@ for this. One is to manually build in a scale, and the other is to use
 the D3 Domain and range methods. We will use a combo of the two in our
 example.
 
-### Bar Chart with Additional Data Elements [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart9_example.html/)
-
 Let’s add a few more elements to our data array:
 
 ```js
-  // New dataset with More Numbers
-  var ratData = [ 40, 70, 60, 20, 40, 100, 60 ]; // Rat data!
+// New dataset with More Numbers
+var ratData = [ 40, 70, 60, 20, 40, 100, 60 ]; // Rat data!
 ```
 
 To accomplish this, we need to adjust the places in the code that sets
@@ -760,11 +766,11 @@ and the max value of the dataset. Put this code right after where you
 define the *width and height* of the SVG.
 
 ```js
-  // Get length of dataset
-  var arrayLength = ratData.length; // length of dataset
-  var maxValue = d3.max(ratData, function(d) { return +d;} ); // get max value of our dataset
-  var x_axisLength = 100; // length of x-axis in our layout
-  var y_axisLength = 100; // length of y-axis in our layout
+// Get length of dataset
+var arrayLength = ratData.length; // length of dataset
+var maxValue = d3.max(ratData, function(d) { return +d;} ); // get max value of our dataset
+var x_axisLength = 100; // length of x-axis in our layout
+var y_axisLength = 100; // length of y-axis in our layout
 ```
 
 Here we get the length of the array so we can we can properly layout the
@@ -786,7 +792,7 @@ we need to to set up a scale that will set the data value of 120 to draw
 an SVG shape that is 100 pixels tall. Scott Murray, in his tutorial on
 scales, represents domains and ranges as follows.
 
-![](/_assets/img/domain-range.png)
+![](./images/domain-range.png)
 
 ### Scales: Domain and Range [Scott Murray](http://alignedleft.com/tutorials/d3/scales)
 
@@ -799,9 +805,9 @@ of our visualization. The code for our scale will look like the
 following, enter this after the variables we just set.
 
 ```js
-  var yScale = d3.scaleLinear()
-      .domain([0, maxValue])
-      .range([0, y_axisLength]);
+var yScale = d3.scaleLinear()
+    .domain([0, maxValue])
+    .range([0, y_axisLength]);
 ```
 
 This takes in our data and scales it to our visualization.
@@ -809,7 +815,7 @@ This takes in our data and scales it to our visualization.
 Next, modify the generate rectangle elements method in our code to
 properly locate `x`, `y`, `width`, and `height`. We’ll use the
 `yScale` for the `y` and `height` values, and some simple math for
-our `x` and `width` values.
+our `x` and `width` values. You will also need to update the axes so they follow the chart as it changes.
 
 ```js
 // Select and generate rectangle elements
@@ -821,20 +827,38 @@ svg.selectAll( "rect" )
         return i * (x_axisLength/arrayLength) + 30; // Set x coord of rect using length of array
     })
     .attr( "y", function(d){
-        return h - yScale(d) - 75; // Set y coordinate of rect using the y scale
+        return h - yScale(d); // Set y coordinate of rect using the y scale
     })
     .attr( "width", (x_axisLength/arrayLength) - 1) // Set bar width using length of array, leave gap of 1px between rect
     .attr( "height", function(d){
         return yScale(d); // Set height of using the scale
     })
     .attr( "fill", "steelblue");
+
+// Create y-axis
+svg.append("line")
+		.attr("x1", 30)
+		.attr("y1", 0)
+		.attr("x2", 30)
+		.attr("y2", 100)
+		.attr("stroke-width", 2)
+		.attr("stroke", "black");
+
+// Create x-axis
+svg.append("line")
+		.attr("x1", 30)
+		.attr("y1", 100)
+		.attr("x2", 130)
+		.attr("y2", 100)
+		.attr("stroke-width", 2)
+		.attr("stroke", "black");
 ```
 
 This will change the location and dimensions of our bars to match the
 new dataset. Try adjusting the array and seeing how the visualization
 changes dynamically!
 
-##### Bar Chart with Additional Data Elements [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart9_example.html/)
+![Dynamically scaled y.](./images/scaled-y.png)
 
 ## Visualize an External CSV
 
@@ -847,8 +871,7 @@ To do this, you have to do three main things
 1.  Replace **ratData** array with call to CSV
 2.  Put the code that creates your visualization within one function
     called **createVisualization()**.
-3.  Locate and correct the calls to your dataset in your function.
-    (**d** -&gt; **d.rats**)
+3.  Change calls to your dataset within the function.
 
 We are going to read data that is being held in CSV. Up to now, our data
 has been in a simple array, but now our data is going to have multiple
@@ -857,7 +880,7 @@ The JSON can be conceptualized as the following.
 
 ### Our Dataset
 
-In your materials, locate `neigh_311.csv`. It contains a small dataset that depicts the total number of 311 calls in 2017 and through this April 3 in 2018. It is saved in CSV format, with the first row as a column
+In your materials from week's class repo, locate `neigh_311.csv`. It contains a small dataset that depicts the total number of 311 calls in 2017 and through April 3, 2018. It is saved in CSV format, with the first row as a column
 header.
 
 ```csv
@@ -892,24 +915,19 @@ Harbor Islands,0
 When the CSV method of D3 is called, it reads the delimited file and
 saves it as a JSON element.
 
-    [{"city": "Brookline", "rats": 40 },
-    {"city": "Boston", "rats": 90 },
-    {"city": "Cambridge", "rats": 30 },
-    {"city": "Somerville", "rats": 60 }]
+```json
+    [{"neigh": "Roslindale", "num_311":9537 },
+    {"neigh": "Jamaica Plain", "num_311": 16083 },
+		...
+    {"neigh": "Harbor Islands", "num_311": 0 }]
+```
 
-Using d3.csv will read the CSV and store the data as a JSON in which you
-can parse the dataset.
+Using d3.csv, we will read the CSV and store the data as a JSON in which you
+can parse the dataset. Make sure you copy the 311 csv from the class repo into the folder with your working HTML files.
 
 ### Replace ratData array with call to CSV
 
-Replace the dataset array that looks like this:
-
-```js
-  // New dataset with More Numbers
-  var ratData = [ 40, 70, 60, 20, 40, 100, 60 ]; // Rat data!
-```
-
-With the following:
+Replace our manually created dataset (`ratData`) dataset with the following:
 
 ```js
 // New dataset read from CSV
@@ -917,7 +935,7 @@ var neigh311 = [];
 
 d3.csv("neigh_311.csv", function(d) {
     return {
-        neigh : d.neigh, // city name
+        neigh : d.neighborhood, // neighborhood name
         num_311 : +d.num_311 // force value of 311 calls to be number (+)
     };
 }, function(error, rows) { // catch error if error, read rows
@@ -927,7 +945,7 @@ d3.csv("neigh_311.csv", function(d) {
 });
 ```
 
-This is an empty array that is then populated with a call to a CSV.
+This is an empty array that is then populated with a call to a CSV. You can check that the CSV was read in properly by saving, refreshing your browser, and taking a quick look at your console log.
 Within the function, we then call a function that we will define below named `createVisualization()`.
 
 ### Put the entire D3 chart code into one function called `createVisualization()`
@@ -1017,7 +1035,7 @@ function createVisualization() {
 
 ### Reload your chart.
 
-##### Bar Chart with Data Loaded from CSV [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart10_example.html/)
+![](./images/loaded_csv.png)
 
 ## Add Simple Hovering
 
@@ -1059,7 +1077,7 @@ modify the tooltip div based on the mouse event. We want to set the
 tooltip to display on **mouseover**, set it move with the mouse on
 **mousemove**, and hide it on **mouseout**. When we set it to the
 display, we want to set the text property to display the correct values
-of our data (**d.city** and **d.rats**. In the *mousemove* function, we
+of our data (`d.neigh` and `d.num_311`. In the *mousemove* function, we
 will use the [event.pageX and
 event.pageY](http://www.w3schools.com/jquery/tryit.asp?filename=tryjquery_event_pagex_pagey)
 methods to return the position of the mouse pointer.
@@ -1069,25 +1087,25 @@ Modify your code to include the lines that begin with `.on("mouseover", function
 ```js
 // Select and generate rectangle elements
 svg.selectAll( "rect" )
-    .data( data311 )
+    .data( neigh311 )
     .enter()
     .append("rect")
     .attr( "x", function(d,i){
         return i * (x_axisLength/arrayLength) + 30; // Set x coord
     })
     .attr( "y", function(d){
-        return h - d.rats * (y_axisLength/maxValue); // Set y coord
+        return h - d.num_311 * (y_axisLength/maxValue); // Set y coord
     })
     .attr( "width", (x_axisLength/arrayLength) - 1)
     .attr( "height", function(d){
-        return d.rats * (y_axisLength/maxValue); // Set height to data value
+        return d.num_311 * (y_axisLength/maxValue); // Set height to data value
     })
     .attr( "fill", "steelblue")
     .on("mouseover", function(d){
-        return tooltip.style("visibility", "visible").text(d.city + ": " + d.rats);
+        return tooltip.style("visibility", "visible").text(d.neigh + ": " + d.num_311);
     })
     .on("mousemove", function(d){
-        return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.city + ": " + d.rats);
+        return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.neigh + ": " + d.num_311);
     })
     .on("mouseout", function(d){
         return tooltip.style("visibility", "hidden");
@@ -1095,8 +1113,8 @@ svg.selectAll( "rect" )
 ```
 
 Save and refresh.
-<!--
-##### Bar Chart with Interactive Hover [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart1_example.html/) -->
+
+![](./images/finished.png)
 
 ## There we have it!
 
@@ -1109,9 +1127,3 @@ today.
 In the next session, we will create a scatterplot, look at scales and
 domains, and explore how you can customize code snippets created by
 others. For now, observe and modify our chart!
-
-##### Dynamic Bar Chart with Interactive Hover [(Click to view this example on its own.)](http://duspviz.mit.edu/d3-workshop/examples/session1/d3_chart11_example.html/)
-
-The next session goes into further depth on scales, domains, and ranges,
-and show the creation of a scatterplot. Take your knowledge here and
-keep building!
