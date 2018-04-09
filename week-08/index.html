@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Learning D3</title>
+	<meta charset="utf-8">
+	<!--The following is like an import command. We're reading in the entire d3 library here -->
+	<script src="https://d3js.org/d3.v4.js" charset="utf-8"></script>
+</head>
+<body>
+	<!--Commands you'll need - cmmd+/ comments out everything.
+	cmmd+[ tabs in, cmmd+] tabs out
+	<!-- let's say you have a barchart of the following values 40, 90, 30, 60 -->
+
+	 <!-- <svg width="160" height="180">
+		<!--This makes four rectangles of equal with, within a graphic of 160 pixels -->
+		<!--you're positioning these bars from the top left with the x value, so space them 25 apart-->
+		<!-- <rect x="30" width="20" height="40" fill="steelblue"></rect>
+		<rect x="55" width="20" height="90" fill="steelblue"></rect>
+		<rect x="80" width="20" height="30" fill="steelblue"></rect>
+		<rect x="105" width="20" height="60" fill="steelblue"></rect>
+	</svg>  -->
+
+
+	<!--Just fyi, now that you're going into Javascript, it's ';' delimited-->
+	<script>
+		var ratData = [40, 90, 30, 60];
+		console.log(d3.selectAll("rect"));
+
+		var w = 150;
+		var h = 175;
+
+		var svg = d3.select("body")
+			.append("svg")
+			.attr("width",w)
+			.attr("height", h);
+
+			//METHOD CHAINING
+			// select all rectangles in our svg object on our page - and we know that there are zero so it'll just make some.
+		svg.selectAll("rect")
+			//bind ratData to rectangles
+			.data(ratData)
+			//if the list of elements is longer than the elements available, here's what you do:
+			.enter()
+			.append("rect")
+			//i here is the index position. when we're iterating over ratData, we can find both the data and the index position of the element. Now they're of width 20, they're all getting allocated 25 pixels.
+			.attr("x", function(d,i) {
+				return i*25 +30;
+			})
+			//here we invert the graph so that it's right-side up. The y position at its most is 175. so now the cases will be positioned a certain number from the top. get it?
+			.attr("y", function(d){
+				return h-d;
+			})
+			.attr("width", 20)
+			.attr("height", 100)
+			.attr("fill", "steelblue");
+
+		//y axis
+		svg.append("line")
+			.attr("x1", 30)
+			.attr("y1", 75)
+			.attr("x2", 30)
+			.attr("y2", 175)
+			.attr("stroke-width", 2)
+			.attr("stroke", "black");
+
+		//x axis
+		svg.append("line")
+			.attr("x1", 30)
+			.attr("y1", 175)
+			.attr("x2", 130)
+			.attr("y2", 175)
+			.attr("stroke-width", 2)
+			.attr("stroke", "black");
+
+		svg.append("text")
+			.attr("class", "y label")
+			.attr("text-anchor", "end")
+			.text("No. of Rats")
+			//translate just means to move
+			.attr("transform", "translate(20, 20) rotate(-90)")
+
+			// set height based on value of array at iterator position
+			// d is just an arbitrary name for your data, just fyi
+			// .attr("height", function (d) {
+			// 	console.log(d); //kinda like "print" in python
+			// 	return d;
+			// });
+	</script>
+</body>
+</html>
