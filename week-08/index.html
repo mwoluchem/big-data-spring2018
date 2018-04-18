@@ -23,36 +23,89 @@
 
 	<!--Just fyi, now that you're going into Javascript, it's ';' delimited-->
 	<script>
-		var ratData = [40, 90, 30, 60];
-		console.log(d3.selectAll("rect"));
+		// var ratData = [40, 90, 30, 60, 20, 40, 100];
+		var neigh311 = []; //HEre's an empty array.
 
+
+		d3.csv("data/neigh_311.csv", function(d) {
+		    return {
+		        neigh : d.neighborhood, // neighborhood name
+		        num_311 : +d.num_311 // force value of 311 calls to be number (+)
+		    };
+		}, function(error, rows) { // catch error if error, read rows
+		    neigh311 = rows; // set neigh311 equal to rows
+		    console.log(neigh311);
+		    createVisualization(); // call function to create chart
+		});
+		// d3.csv("data/neigh_311.csv", function(d){
+		// 	return {
+		// 		neigh : d.neighborhood,
+		// 		num_311 : +d.num_311 //Make it a numeric data type
+		// 	}; //This is the end of "return", not function
+		//  function(error, rows) {
+		// 	neigh311 = row;
+		// 	console.log(neigh311);
+		// 	createVisualization(); //Now we're putting the call for a visualization here so that we read in the CSV before we call the function that draws it
+		// });//Now we use the csv method in d3 to get our doc in here
+		// console.log(d3.selectAll("rect"));
+
+		function createVisualization(){
 		var w = 150;
 		var h = 175;
+
+		//We're going to use these variables to set visualization parameters here - they're global variables!
+		// var arrayLength = ratData.length;
+		var arrayLength = neigh311.length;
+		var maxValue = d3.max(neigh311, function(d) {return+d.num_311}); //The +d means an integer, as opposed to a regular number
+		var x_axisLength = 100;
+		var y_axisLength = 100;
+
+		var yScale = d3.scaleLinear()
+			.domain([0, maxValue]) //Set the domain and range to equal the boundaries of the data you have
+			.range([0, y_axisLength]);
 
 		var svg = d3.select("body")
 			.append("svg")
 			.attr("width",w)
 			.attr("height", h);
 
+		var tooltip = d3.select("body")
+			.append("div")//This is the empty container for things in HTML documents
+			.style("position", "absolute")
+			.style("font-family", " 'Open Sans', sans-serif")
+			.style("font-size", "12px")
+			.style("z-index", "10")
+
 			//METHOD CHAINING
 			// select all rectangles in our svg object on our page - and we know that there are zero so it'll just make some.
 		svg.selectAll("rect")
 			//bind ratData to rectangles
-			.data(ratData)
+			.data(neigh311)
 			//if the list of elements is longer than the elements available, here's what you do:
 			.enter()
 			.append("rect")
 			//i here is the index position. when we're iterating over ratData, we can find both the data and the index position of the element. Now they're of width 20, they're all getting allocated 25 pixels.
 			.attr("x", function(d,i) {
-				return i*25 +30;
+				return i*(x_axisLength / arrayLength) +30; //For each rectangle, set it equal to 30, 55, 80, 105. Those are x values from the left side of the screen. Each bar is 20 pixels, (as we've put the width down there)
 			})
 			//here we invert the graph so that it's right-side up. The y position at its most is 175. so now the cases will be positioned a certain number from the top. get it?
 			.attr("y", function(d){
-				return h-d;
+				return h-yScale(d.num_311); //Now it's going to fix the height compared to the scale they're supposed to be at. The max height of one of our bars will always be 100.
 			})
-			.attr("width", 20)
-			.attr("height", 100)
-			.attr("fill", "steelblue");
+			.attr("width", (x_axisLength / arrayLength))
+			.attr("height", function(d) {
+				return yScale(d.num_311);
+			})
+			.attr("fill", "steelblue")
+			.on("mouseover", function(d){
+		return tooltip.style("visibility", "visible").text(d.neigh + ": " + d.num_311);
+})
+.on("mousemove", function(d){
+		return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px").text(d.neigh + ": " + d.num_311);
+})
+.on("mouseout", function(d){
+		return tooltip.style("visibility", "hidden");
+});
 
 		//y axis
 		svg.append("line")
@@ -75,9 +128,10 @@
 		svg.append("text")
 			.attr("class", "y label")
 			.attr("text-anchor", "end")
-			.text("No. of Rats")
+			.text("No. 311 calls per neighborhood")
 			//translate just means to move
 			.attr("transform", "translate(20, 20) rotate(-90)")
+		}
 
 			// set height based on value of array at iterator position
 			// d is just an arbitrary name for your data, just fyi
