@@ -32,6 +32,9 @@ import matplotlib.pylab as plt
 
 df = pd.read_csv('week-03/data/skyhook_2017-07.csv', sep=',')
 
+# read in for PH
+df = pd.read_csv('/Users/phoebe/Dropbox (MIT)/big-data/data/skyhook_2017-07.csv', sep=',')
+
 df.head()
 
 # Create a new date column formatted as datetimes.
@@ -150,6 +153,10 @@ df[df['hour'].isin([4])].groupby(['lat','lon'])['count'].sum().reset_index().plo
 df[df['hour'].isin([12])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location at noon')
 
 df[df['hour'].isin([18])].groupby(['lat','lon'])['count'].sum().reset_index().plot.scatter(x='lon', y='lat', s=df['count']/3000, title='GPS pings by location at 6pm')
+## Maia, great job! This is what we had in mind, yes! A few things to address in the future: you are setting the size of each dot based on the counts in the whole dataframe, not on the subset of counts at each given time.
+Here is a simpler way of producing each graph:
+sixpm = df[df['hour'] == 18]
+sixpm.plot.scatter(x = 'lon', y = 'lat', s = sixpm['count'] / 1000)
 ```
 
 ## Problem 6: Analyze Your (Very) Preliminary Findings
