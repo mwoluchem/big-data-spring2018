@@ -90,7 +90,8 @@
 			})
 			//here we invert the graph so that it's right-side up. The y position at its most is 175. so now the cases will be positioned a certain number from the top. get it?
 			.attr("y", function(d){
-				return h-yScale(d.num_311); //Now it's going to fix the height compared to the scale they're supposed to be at. The max height of one of our bars will always be 100.
+				return yScale(d.num_311);
+				// return h-yScale(d.num_311); //Now it's going to fix the height compared to the scale they're supposed to be at. The max height of one of our bars will always be 100.
 			})
 			.attr("width", (x_axisLength / arrayLength))
 			.attr("height", function(d) {
