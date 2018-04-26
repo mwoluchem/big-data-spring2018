@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Chloropleth Map of 311 Activity by Neighborhood</title>
+	<style>
+	.neighborhoods {
+	  fill: none;
+	}
+	</style>
+</head>
+<body>
+	<svg width="960" height="600"></svg>
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="http://d3js.org/topojson.v2.min.js"></script>
+	<script src="https://d3js.org/d3-queue.v2.min.js"></script>
+
+	<script>
+
+	var svg = d3.select("svg"),
+		width = +svg.attr("width"),
+		height = +svg.attr("height");
+
+	var boston_311_totals = d3.map();
+
+	var albersProjection = d3.geoAlbers()
+		  .scale( 190000 )
+		  .rotate( [71.057,0] )
+		  .center( [0, 42.313] )
+		  .translate( [width/2,height/2] );
+
+	var path = d3.geoPath()
+			.projection( albersProjection );
+
+	var color = d3.scaleThreshold()
+		.domain([0, 0.1, 0.2, 0.3, 0.4])
+		.range(["#f2f0f7", "#dadaeb", "#bcbddc", "#9e9ac8", "#756bb1", "#54278f"]);
+
+	var tooltip = d3.select("body")
+			.append("div")
+			.style("position", "absolute")
+			.style("font-family", "'Open Sans', sans-serif")
+			.style("font-size", "12px")
+			.style("z-index", "10")
+			.style("visibility", "hidden")
+			.style("background-color","white")
+		  .style("padding","5px")
+		  .style("opacity","0.7");
+
+	var x = d3.scaleLinear()
+	    .domain([0, .4])
+	    .rangeRound([50, 300]);
+
+	// var color = d3.scaleThreshold()
+	//     .domain(d3.range(2, 10))
+	//     .range(d3.schemeBlues[9]);
+
+	var g = svg.append("g")
+	    .attr("class", "key")
+	    .attr("transform", "translate(0,40)");
+
+	g.selectAll("rect")
+	  .data(color.range().map(function(d) {
+	      d = color.invertExtent(d);
+	      if (d[0] == null) d[0] = x.domain()[0];
+	      if (d[1] == null) d[1] = x.domain()[1];
+	      return d;
+	    }))
+	  .enter().append("rect")
+	    .attr("height", 8)
+	    .attr("x", function(d) { return x(d[0]); })
+	    .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+	    .attr("fill", function(d) { return color(d[0]); });
+
+	g.append("text")
+	    .attr("class", "caption")
+	    .attr("x", x.range()[0])
+	    .attr("y", -6)
+	    .attr("fill", "#000")
+	    .attr("text-anchor", "start")
+	    .attr("font-weight", "bold")
+	    .text("Percent of 311 Calls Received Through Twitter");
+
+	g.call(d3.axisBottom(x)
+	    .tickSize(13)
+	    .tickFormat(function(x, i) { return i ? x : x + "%"; })
+	    .tickValues(color.domain()))
+	  .select(".domain")
+	    .remove();
+
+	d3.queue()
+		  .defer(d3.json, "data/boston_neigh.json")
+			.defer(d3.csv, "data/boston_311_totals.csv")
+		  .await(ready);
+
+		function ready(error, neigh, tweets) {
+		  if (error) throw error;
+
+			var tweets311 = {};
+
+			tweets.forEach(function(d) {
+    		tweets311[d.Name] = 100*(+d.twit_count/+d.tot_count); // Create property for each ID, give it value from rate
+  		});
+
+			svg.append("g")
+		    .attr("class", "neighborhoods")
+		    .selectAll("path")
+		    .data(topojson.feature(neigh, neigh.objects.boston_neigh).features)
+		    .enter().append("path")
+		      .attr("fill", function(d) {
+		        return color(tweets311[d.properties.Name]);
+		       })
+		      .attr("d", path)
+					  .style("stroke", "white")
+					.on("mouseover", function(d){
+        		return tooltip.style("visibility", "visible").text(d.properties.Name + ": " + (tweets311[d.properties.Name]).toFixed(2) + "%");
+    			})
+    			.on("mousemove", function(d){
+        		return tooltip.style("top", (d3.event.pageY-10)+"px").style("left",(d3.event.pageX+10)+"px").text(d.properties.Name + ": " + (tweets311[d.properties.Name]).toFixed(2) + "%");
+    			})
+			    .on("mouseout", function(d){
+			        return tooltip.style("visibility", "hidden");
+			    });
+		};
+
+		// Create Tooltip and set it to be hidden
+
+		//   svg.append("g")
+		//     .attr("class", "neighborhoods")
+		//     .selectAll("path")
+		//     .data(topojson.feature(neigh, neigh.objects.boston_neigh).features)
+		//     .enter().append("path")
+		// 			.attr("fill", function(d) {
+		// 	  		return color(tweets[d.properties.Name]); // get rate value for property matching data ID
+		// 	// pass rate value to color function, return color based on domain and range
+		// 			})
+		// 			.attr("d", path)
+		//       .style("fill", "white")
+		//       .style("stroke", "black");
+		// };
+		// Our D3 code will go here.
+	</script>
+</body>
+</html>
